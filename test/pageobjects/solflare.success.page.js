@@ -11,5 +11,8 @@ class SolflareSuccessPage extends Page {
     get followButton() {
         return $("//button[.//span[contains(text(), 'Follow us')]]")
     }
+    get solanaButton() {
+        return $('button[color="primary"]')
+    }
 }
 module.exports = new SolflareSuccessPage();
