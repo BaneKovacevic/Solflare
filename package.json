@@ -14,5 +14,10 @@
     "@wdio/local-runner": "^8.36.1",
     "@wdio/mocha-framework": "^8.36.1",
     "@wdio/spec-reporter": "^8.36.1"
+  },
+  "dependencies": {
+    "assert": "^2.1.0",
+    "logger": "^0.0.1",
+    "winston": "^3.13.0"
   }
 }

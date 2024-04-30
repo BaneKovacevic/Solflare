@@ -1,4 +1,7 @@
+const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
 exports.config = {
+    // WebdriverIO configurations...
+
     //
     // ====================
     // Runner Configuration
