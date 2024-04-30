@@ -7,7 +7,7 @@ const { Key } = require('webdriverio')
 const assert = require('assert');
 
 
-describe('My Login application', () => {
+describe('Verify that the correct recovery phrase is copied', () => {
     it('should check main page elements', async () => {
         // Open the login page
         logger.info('Opening the login page')

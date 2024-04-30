@@ -17,6 +17,30 @@ class SolflareCreatePage extends Page {
     get copyButton() {
         return $('(//button[contains(@class, "MuiButton-textPrimary")])[2]')
     }
+    get phraseIsSaved() {
+        return $('.MuiButton-containedPrimary.css-1hcgjm')
+    }
+    get passwordInput() {
+        return $('input[name="password"]');
+    }
+
+    get password2Input() {
+        return $('input[name="password2"]');
+    }
+    get continueButton() {
+        return $('[data-id="continue_button"]');
+    }
+    get continueButttonFinal() {
+        return $('.MuiButton-containedPrimary.css-1hcgjm')
+    }
+    /**
+     * a method to encapsule automation code to interact with the page
+     * e.g. to login using username and password
+     */
+    async setNewPasswords(passwordInput, password2Input) {
+        await this.passwordInput.setValue(passwordInput);
+        await this.password2Input.setValue(password2Input);
+    }
 }
 
 module.exports = new SolflareCreatePage();

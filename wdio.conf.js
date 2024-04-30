@@ -1,5 +1,6 @@
 const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
 exports.config = {
+    PASSWORD: 'mySecurePassword123',
     // WebdriverIO configurations...
 
     //
