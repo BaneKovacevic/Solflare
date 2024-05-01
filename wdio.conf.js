@@ -1,4 +1,12 @@
 const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
+// Function to get the command-line argument value for a given key
+function getArgValue(argName) {
+    const arg = process.argv.find(a => a.startsWith(`--${argName}=`));
+    return arg ? arg.split('=')[1] : null;
+}
+
+// Get browser name from command-line argument or default to 'chrome'
+const browserName = getArgValue('browser') || 'chrome';
 exports.config = {
     PASSWORD: 'mySecurePassword123',
     // WebdriverIO configurations...
@@ -53,10 +61,14 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome'
-    }],
-
+    capabilities: [
+        {
+            browserName: browserName,
+            'goog:chromeOptions': browserName === 'chrome' ? {} : null,
+            'moz:firefoxOptions': browserName === 'firefox' ? {} : null,
+            'ms:edgeOptions': browserName === 'MicrosoftEdge' ? {} : null,
+        },
+    ],
     //
     // ===================
     // Test Configurations
@@ -64,7 +76,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'warn',
     //
     // Set specific log levels per logger
     // loggers:
