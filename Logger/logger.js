@@ -1,18 +1,17 @@
-const winston = require('winston')
+const winston = require('winston');
 
-// Configure winston logger
+// Set up a custom logger
 const logger = winston.createLogger({
-    level: 'info',
+    level: 'info', // Log level to control the verbosity
     format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.printf(({ timestamp, level, message }) => {
-            return `${timestamp} [${level.toUpperCase()}]: ${message}`
-        })
+        winston.format.simple() // Simple output format
     ),
     transports: [
         new winston.transports.Console(), // Log to console
-        new winston.transports.File({ filename: 'test.log' }) // Log to a file
-    ]
+        new winston.transports.File({ filename: 'custom_log.log' }) // Log to a custom file
+    ],
 });
 
-module.exports = logger;
+module.exports = logger; // Export the logger
+
