@@ -4,7 +4,6 @@ function getArgValue(argName) {
     const arg = process.argv.find(a => a.startsWith(`--${argName}=`));
     return arg ? arg.split('=')[1] : null;
 }
-
 // Get browser name from command-line argument or default to 'chrome'
 const browserName = getArgValue('browser') || 'chrome';
 exports.config = {
@@ -140,7 +139,6 @@ exports.config = {
             console.log(`Screenshot saved at ${screenshotPath}`); // Log the screenshot location
         }
     },
-    
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
