@@ -38,9 +38,29 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         // Step 5: Log success messages to confirm elements are visible
         // After confirming visibility, these logs help trace the successful completion of checks.
-        logger.info('The "Access wallet" button is visible.')
-        logger.info('The "Download for" button is visible.')
-        logger.info('The "Image" is visible.')
+        try {
+            expect(isAccessWalletButtonVisible).toBe(true);
+            logger.info('"Access wallet" button is confirmed visible');
+        } catch (error) {
+            logger.error('"Access wallet" button is NOT visible');
+            throw error; // rethrow the error after logging
+        }
+
+        try {
+            expect(isDownloadButtonVisible).toBe(true);
+            logger.info('"Download for" button is confirmed visible');
+        } catch (error) {
+            logger.error('"Download for" button is NOT visible');
+            throw error;
+        }
+
+        try {
+            expect(isImageVisible).toBe(true);
+            logger.info('"Image" is confirmed visible');
+        } catch (error) {
+            logger.error('"Image" is NOT visible');
+            throw error;
+        }
     });
 
     it('should click on "Access Wallet" button', async () => {
@@ -54,14 +74,25 @@ describe('Verify that the correct recovery phrase is copied', () => {
         const isWalletButtonVisible = await SolflareOnboardPage.walletButton.waitForDisplayed({ timeout: 4000 })
 
         // Step 3: Assert that the onboarding elements are visible
-        // These assertions confirm that the critical elements on the onboarding page have loaded and are visible to the user.
-        expect(isNewWalletButtonVisible).toBe(true, '"New Wallet" button should be visible, but it is not.')
-        expect(isWalletButtonVisible).toBe(true, '"Wallet" button should be visible, but it is not.')
+        // Log before each assertion and handle possible errors
+        try {
+            expect(isNewWalletButtonVisible).toBe(true);
+            logger.info('"New Wallet" button is visible'); // Log success if assertion passes
+        } catch (error) {
+            logger.error('"New Wallet" button is NOT visible'); // Log error if assertion fails
+            throw error; // Re-throw to ensure test fails
+        }
 
-        // Step 4: Log success messages to confirm elements are visible
-        // If the previous assertions are successful, these logs help verify that the expected elements are visible and the onboarding page is functioning correctly.
-        logger.info('The "New Wallet" button is visible.')
-        logger.info('The "Wallet" button is visible.')
+        try {
+            expect(isWalletButtonVisible).toBe(true);
+            logger.info('"Wallet" button is visible'); // Log success if assertion passes
+        } catch (error) {
+            logger.error('"Wallet" button is NOT visible'); // Log error if assertion fails
+            throw error; // Re-throw to ensure test fails
+        }
+
+        // Log the end of assertions
+        logger.info('Onboarding elements visibility check completed');
     });
 
     it('should click on "I need a new wallet" button', async () => {
@@ -75,11 +106,19 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         // Step 3: Assert that the "Save Phrase" button is visible
         // This assertion confirms that the "Save Phrase" button is visible on the new wallet page, ensuring proper UI functionality.
-        expect(isSavePhraseButtonVisible).toBe(true, '"Save Phrase" button should be visible.')
+        try {
+            // Step 1: Assert that the "Save Phrase" button is visible
+            expect(isSavePhraseButtonVisible).toBe(true);
 
-        // Step 4: Log success message to confirm visibility
-        // If the assertion is successful, this log message helps trace that the expected element is visible, indicating that the new wallet page is functioning as expected.
-        logger.info('The "Save Phrase" button is visible.')
+            // Log success if the assertion passes
+            logger.info('"Save Phrase" button is visible');
+        } catch (error) {
+            // Log error with a detailed message if the assertion fails
+            logger.error('"Save Phrase" button is NOT visible');
+
+            // Re-throw the error to ensure the test fails
+            throw error;
+        }
     });
 
     it('should extract text from newwallet page and compare it with what we copied in clipboard', async () => {

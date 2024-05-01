@@ -43,48 +43,87 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         // Step 5: Log success messages to confirm elements are visible
         // After confirming visibility, these logs help trace the successful completion of checks.
-        logger.info('The "Access wallet" button is visible.')
-        logger.info('The "Download for" button is visible.')
-        logger.info('The "Image" is visible.')
+        try {
+            expect(isAccessWalletButtonVisible).toBe(true);
+            logger.info('"Access wallet" button is confirmed visible');
+        } catch (error) {
+            logger.error('"Access wallet" button is NOT visible');
+            throw error; // rethrow the error after logging
+        }
+
+        try {
+            expect(isDownloadButtonVisible).toBe(true);
+            logger.info('"Download for" button is confirmed visible');
+        } catch (error) {
+            logger.error('"Download for" button is NOT visible');
+            throw error;
+        }
+
+        try {
+            expect(isImageVisible).toBe(true);
+            logger.info('"Image" is confirmed visible');
+        } catch (error) {
+            logger.error('"Image" is NOT visible');
+            throw error;
+        }
     });
 
     it('should click on "Access Wallet" button', async () => {
-        // Step 1: Click on the "Access wallet" button to navigate to the onboarding section
-        // This step initiates the onboarding process by interacting with the main page to move forward.
-        await SolflarePage.accessWalletButton.click(); // Click the button to access the onboarding process
+        // Step 1: Click on the "Access wallet" button to go to the onboarding section
+        // This action is the trigger to navigate from the main page to the onboarding section, where users can access or create wallets.
+        await SolflarePage.accessWalletButton.click()
 
-        // Step 2: Wait for key onboarding elements to be displayed
-        // These waits ensure that the necessary elements are present before proceeding with assertions.
-        const isNewWalletButtonVisible = await SolflareOnboardPage.newWalletButton.waitForDisplayed({ timeout: 4000 }); // Wait for the "New Wallet" button to appear
-        const isWalletButtonVisible = await SolflareOnboardPage.walletButton.waitForDisplayed({ timeout: 4000 }); // Wait for the "Wallet" button to appear
+        // Step 2: Wait for onboarding elements to be displayed
+        // This step ensures that the page has loaded and specific onboarding elements are visible before further interactions.
+        const isNewWalletButtonVisible = await SolflareOnboardPage.newWalletButton.waitForDisplayed({ timeout: 4000 })
+        const isWalletButtonVisible = await SolflareOnboardPage.walletButton.waitForDisplayed({ timeout: 4000 })
 
         // Step 3: Assert that the onboarding elements are visible
-        // These assertions confirm that the expected elements are displayed, indicating the page loaded correctly.
-        expect(isNewWalletButtonVisible).toBe(true, '"New Wallet" button should be visible, but it is not.'); // Check the visibility of the "New Wallet" button
-        expect(isWalletButtonVisible).toBe(true, '"Wallet" button should be visible, but it is not.'); // Check the visibility of the "Wallet" button
+        // Log before each assertion and handle possible errors
+        try {
+            expect(isNewWalletButtonVisible).toBe(true);
+            logger.info('"New Wallet" button is visible'); // Log success if assertion passes
+        } catch (error) {
+            logger.error('"New Wallet" button is NOT visible'); // Log error if assertion fails
+            throw error; // Re-throw to ensure test fails
+        }
 
-        // Step 4: Log success messages to confirm the onboarding elements are visible
-        // This step logs successful checks, providing confirmation for debugging and traceability.
-        logger.info('The "New Wallet" button is visible.'); // Log success for the "New Wallet" button
-        logger.info('The "Wallet" button is visible.'); // Log success for the "Wallet" button
+        try {
+            expect(isWalletButtonVisible).toBe(true);
+            logger.info('"Wallet" button is visible'); // Log success if assertion passes
+        } catch (error) {
+            logger.error('"Wallet" button is NOT visible'); // Log error if assertion fails
+            throw error; // Re-throw to ensure test fails
+        }
+
+        // Log the end of assertions
+        logger.info('Onboarding elements visibility check completed');
     });
 
     it('should click on "I need a new wallet" button', async () => {
         // Step 1: Click on the "New Wallet" button to navigate to the new wallet section
-        // This step initiates the process to create a new wallet by clicking the corresponding button in the onboarding section.
-        await SolflareOnboardPage.newWalletButton.click(); // Simulate the button click to proceed to the new wallet creation page
+        // This step simulates a user action to create a new wallet. It is crucial for testing the functionality of navigating to the new wallet page.
+        await SolflareOnboardPage.newWalletButton.click()
 
-        // Step 2: Check the visibility of the "Save Phrase" button
-        // This step ensures that the "Save Phrase" button, a critical element on the new wallet page, is visible within a given timeout.
-        const isSavePhraseButtonVisible = await SolflareCreatePage.savePhraseButton.waitForDisplayed({ timeout: 4000 }); // Wait for the "Save Phrase" button to be displayed
+        // Step 2: Check visibility of the "Save Phrase" button
+        // This step waits for the "Save Phrase" button to be displayed, indicating that the new wallet page has loaded successfully.
+        const isSavePhraseButtonVisible = await SolflareCreatePage.savePhraseButton.waitForDisplayed({ timeout: 4000 });
 
         // Step 3: Assert that the "Save Phrase" button is visible
-        // This assertion validates that the page has loaded correctly, confirming the presence of a key element for saving the recovery phrase.
-        expect(isSavePhraseButtonVisible).toBe(true, '"Save Phrase" button should be visible.'); // Verify that the button is displayed
+        // This assertion confirms that the "Save Phrase" button is visible on the new wallet page, ensuring proper UI functionality.
+        try {
+            // Step 1: Assert that the "Save Phrase" button is visible
+            expect(isSavePhraseButtonVisible).toBe(true);
 
-        // Step 4: Log a success message to confirm the visibility of the "Save Phrase" button
-        // Logging is crucial for traceability and helps verify that the expected elements are visible.
-        logger.info('The "Save Phrase" button is visible.'); // Log the successful detection of the "Save Phrase" button
+            // Log success if the assertion passes
+            logger.info('"Save Phrase" button is visible');
+        } catch (error) {
+            // Log error with a detailed message if the assertion fails
+            logger.error('"Save Phrase" button is NOT visible');
+
+            // Re-throw the error to ensure the test fails
+            throw error;
+        }
     });
 
     it('should extract text from the new wallet page', async () => {
