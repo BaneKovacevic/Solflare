@@ -1,10 +1,15 @@
-const { expect } = require('@wdio/globals')
-const SolflarePage = require('C:/Repository/WebdriverIO/Solflare/test/pageobjects/solflare.page.js')
-const SolflareCreatePage = require('C:/Repository/WebdriverIO/Solflare/test/pageobjects/solflare.create.page')
-const SolflareOnboardPage = require('../pageobjects/solflare.onboard.page')
-const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
-const { Key } = require('webdriverio')
-const assert = require('assert');
+// Importing necessary modules and objects
+const { expect } = require('@wdio/globals'); // Assertion library
+const { Key } = require('webdriverio'); // WebdriverIO utilities
+const assert = require('assert'); // Node.js assertion library
+
+// Importing page objects using relative paths
+const SolflarePage = require('../pageobjects/solflare.page');
+const SolflareCreatePage = require('../pageobjects/solflare.create.page'); 
+const SolflareOnboardPage = require('../pageobjects/solflare.onboard.page'); 
+
+// Importing the logger
+const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger');
 
 
 describe('Verify that the correct recovery phrase is copied', () => {
@@ -155,4 +160,3 @@ describe('Verify that the correct recovery phrase is copied', () => {
         logger.info('Correct recovery phrase is copied') // Indicates the test passed successfully
     })
 })
-
