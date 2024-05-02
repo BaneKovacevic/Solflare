@@ -1,11 +1,21 @@
 const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
-// Function to get the command-line argument value for a given key
-function getArgValue(argName) {
-    const arg = process.argv.find(a => a.startsWith(`--${argName}=`));
-    return arg ? arg.split('=')[1] : null;
-}
-// Get browser name from command-line argument or default to 'chrome'
-const browserName = getArgValue('browser') || 'chrome';
+const parseBrowserArgs = () => {
+    const browsersArg = process.argv.find((arg) => arg.startsWith('--browsers='));
+    if (browsersArg) {
+        return browsersArg.split('=')[1].split(',').map((browser) => browser.trim());
+    }
+    // Default to all three browsers if no argument is provided
+    return ['chrome', 'firefox', 'MicrosoftEdge'];
+};
+
+const browsers = parseBrowserArgs(); // Parse browsers from command-line or use default
+const capabilities = browsers.map((browser) => ({
+    browserName: browser,
+    'goog:chromeOptions': browser === 'chrome' ? {} : null,
+    'moz:firefoxOptions': browser === 'firefox' ? {} : null,
+    'ms:edgeOptions': browser === 'MicrosoftEdge' ? {} : null,
+}));
+
 exports.config = {
     // Configure where screenshots are stored
     outputDir: './test-results/screenshots', // Define the directory for storing screenshots
@@ -63,14 +73,7 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [
-        {
-            browserName: browserName,
-            'goog:chromeOptions': browserName === 'chrome' ? {} : null,
-            'moz:firefoxOptions': browserName === 'firefox' ? {} : null,
-            'ms:edgeOptions': browserName === 'MicrosoftEdge' ? {} : null,
-        },
-    ],
+    capabilities,
     //
     // ===================
     // Test Configurations
