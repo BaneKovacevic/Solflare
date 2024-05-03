@@ -1,17 +1,22 @@
+// logger.js
 const winston = require('winston');
+const path = require('path');
 
-// Set up a custom logger
 const logger = winston.createLogger({
-    level: 'info', // Log level to control the verbosity
+    level: 'info', // You can adjust the logging level as needed
     format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.simple() // Simple output format
+        winston.format.printf(
+            ({ level, message, timestamp }) => `[${timestamp}] [${level.toUpperCase()}]: ${message}`
+        )
     ),
     transports: [
-        new winston.transports.Console(), // Log to console
-        new winston.transports.File({ filename: 'custom_log.log' }) // Log to a custom file
+        new winston.transports.File({
+            filename: path.join('C:', 'Repository', 'WebdriverIO', 'Solflare', 'Reports', 'webdriverio.log'),
+        }),
     ],
 });
 
-module.exports = logger; // Export the logger
+module.exports = logger;
+
 
