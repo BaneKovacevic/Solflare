@@ -1,20 +1,17 @@
 const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
-const parseBrowserArgs = () => {
-    const browsersArg = process.argv.find((arg) => arg.startsWith('--browsers='));
-    if (browsersArg) {
-        return browsersArg.split('=')[1].split(',').map((browser) => browser.trim());
-    }
-    // Default to all three browsers if no argument is provided
-    return ['chrome', 'firefox', 'MicrosoftEdge'];
+const getArgValue = (argName) => {
+    const arg = process.argv.find((a) => a.startsWith(`--${argName}=`));
+    return arg ? arg.split('=')[1] : null;
 };
+const defaultSpecs = ['./test/specs/**/*.js']; // Path to all test cases
 
-const browsers = parseBrowserArgs(); // Parse browsers from command-line or use default
-const capabilities = browsers.map((browser) => ({
-    browserName: browser,
-    'goog:chromeOptions': browser === 'chrome' ? {} : null,
-    'moz:firefoxOptions': browser === 'firefox' ? {} : null,
-    'ms:edgeOptions': browser === 'MicrosoftEdge' ? {} : null,
-}));
+// Default browsers to run all tests in Chrome, Firefox, and Microsoft Edge
+const defaultBrowsers = ['chrome', 'firefox', 'MicrosoftEdge'];
+
+// Parse the test specs and browsers from command-line arguments
+const spec = getArgValue('spec') || ['./test/specs/**/*.js']; // Default to all tests
+const browser = getArgValue('browser') || 'chrome'; // Default to Chrome
+
 
 exports.config = {
     // Configure where screenshots are stored
@@ -67,13 +64,15 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
-    //
-    // If you have trouble getting all important capabilities together, check out the
-    // Sauce Labs platform configurator - a great tool to configure your capabilities:
-    // https://saucelabs.com/platform/platform-configurator
-    //
-    capabilities,
+    maxInstances: 1, // Adjust as needed
+    capabilities: [
+        {
+            browserName: browser,
+            'goog:chromeOptions': browser === 'chrome' ? {} : null,
+            'moz:firefoxOptions': browser === 'firefox' ? {} : null,
+            'ms:edgeOptions': browser === 'MicrosoftEdge' ? {} : null,
+        },
+    ],
     //
     // ===================
     // Test Configurations
