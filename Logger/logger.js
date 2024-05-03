@@ -30,5 +30,4 @@ class Logger {
         return Logger.instance; // Returns the single instance
     }
 }
-
 module.exports = new Logger(); // Ensures only one instance of Logger
