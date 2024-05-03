@@ -1,0 +1,10 @@
+{"level":"info","message":"Opening the login page","timestamp":"2024-05-03T11:44:39.087Z"}
+{"level":"info","message":"Arrived at page: https://solflare.com/","timestamp":"2024-05-03T11:44:40.202Z"}
+{"level":"info","message":"\"Access wallet\" button is confirmed visible","timestamp":"2024-05-03T11:44:40.358Z"}
+{"level":"info","message":"\"Download for\" button is confirmed visible","timestamp":"2024-05-03T11:44:40.359Z"}
+{"level":"info","message":"\"Image\" is confirmed visible","timestamp":"2024-05-03T11:44:40.360Z"}
+{"level":"info","message":"\"New Wallet\" button is visible","timestamp":"2024-05-03T11:44:42.549Z"}
+{"level":"info","message":"\"Wallet\" button is visible","timestamp":"2024-05-03T11:44:42.549Z"}
+{"level":"info","message":"Onboarding elements visibility check completed","timestamp":"2024-05-03T11:44:42.549Z"}
+{"level":"info","message":"\"Save Phrase\" button is visible","timestamp":"2024-05-03T11:44:42.691Z"}
+{"level":"info","message":"Correct recovery phrase is copied","timestamp":"2024-05-03T11:44:43.447Z"}

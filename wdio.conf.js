@@ -130,24 +130,22 @@ exports.config = {
     // before running any tests.
     framework: 'mocha',
     // Hook to take screenshots after test failures
-    before: function (capabilities, specs) {
-        logger.info('Starting WebdriverIO Tests');
-    },
-
-    before: function (capabilities, specs) {
-        logger.info('Starting WebdriverIO Tests');
-    },
-
-    afterTest: function (test, context, { error, result, duration, passed, retries }) {
-        if (error) {
-            logger.error(`Test "${test.fullTitle}" failed with error: ${error.message}`);
+    beforeTest: function (test) {
+        console.log("BeforeTest Hook:", test); // Debugging
+        if (test) {
+            console.log("Test Name:", test.fullTitle()); // Check if fullTitle is available
         } else {
-            logger.info(`Test "${test.fullTitle}" passed in ${duration}ms`);
+            console.warn("Undefined test in beforeTest");
         }
     },
 
-    after: function (result, capabilities, specs) {
-        logger.info('All tests completed');
+    afterTest: function (test, context, { error, result, duration, passed, retries }) {
+        console.log("AfterTest Hook:", test); // Debugging
+        if (test) {
+            console.log("Test Name:", test.fullTitle()); // Check if fullTitle is available
+        } else {
+            console.warn("Undefined test in afterTest");
+        }
     },
     //
     // The number of times to retry the entire specfile when it fails as a whole
