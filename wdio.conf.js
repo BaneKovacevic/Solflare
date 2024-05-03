@@ -130,19 +130,7 @@ exports.config = {
     // before running any tests.
     framework: 'mocha',
     // Hook to take screenshots after test failures
-    beforeTest: function (test) {
-        const testCaseName = test.fullTitle();
-        logger.info(`Starting test: ${testCaseName}`, { testCase: testCaseName });
-    },
-
-    afterTest: function (test, context, { error, result, duration, passed, retries }) {
-        const testCaseName = test.fullTitle();
-        if (passed) {
-            logger.info(`Test "${testCaseName}" passed in ${duration}ms`, { testCase: testCaseName });
-        } else {
-            logger.error(`Test "${testCaseName}" failed with error: ${error.message}`, { testCase: testCaseName });
-        }
-    },
+    
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
@@ -164,7 +152,6 @@ exports.config = {
         ui: 'bdd',
         timeout: 60000
     },
-
     //
     // =====
     // Hooks
