@@ -11,7 +11,7 @@ const defaultBrowsers = ['chrome', 'firefox', 'MicrosoftEdge'];
 
 // Parse the test specs and browsers from command-line arguments
 const spec = getArgValue('spec') || ['./test/specs/**/*.js']; // Default to all tests
-const browser = getArgValue('browser') || 'chrome'; // Default to Chrome
+const browserType = getArgValue('browser') || 'chrome'; // Default to Chrome
 
 
 exports.config = {
@@ -68,10 +68,10 @@ exports.config = {
     maxInstances: 1, // Adjust as needed
     capabilities: [
         {
-            browserName: browser,
-            'goog:chromeOptions': browser === 'chrome' ? {} : null,
-            'moz:firefoxOptions': browser === 'firefox' ? {} : null,
-            'ms:edgeOptions': browser === 'MicrosoftEdge' ? {} : null,
+            browserName: browserType,
+            'goog:chromeOptions': browserType === 'chrome' ? {} : null,
+            'moz:firefoxOptions': browserType === 'firefox' ? {} : null,
+            'ms:edgeOptions': browserType === 'MicrosoftEdge' ? {} : null,
         },
     ],
     //
