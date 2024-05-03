@@ -15,36 +15,29 @@ const TwitterSolflare = require('../pageobjects/twitter.solflare.wallet.js')
 const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger');
 const config = require('../config/config.js');
 
-
 describe('Verify that the Solflare’s Twitter profile opens in a new tab and after close user is returned to the solflare app', () => {
     it('should open the main Solflare page', async () => {
         // Step 1: Open the login page
         // The test begins by opening the login page of the Solflare application.
-        logger.info('Opening the login page')
-        await SolflarePage.open()
+        logger.info('Opening the login page');
+        await SolflarePage.open();
 
         // Step 2: Log the current page URL
         // This step is useful for tracking and debugging, ensuring the correct page is opened.
-        const currentPageUrl = await browser.getUrl()
-        logger.info(`Arrived at page: ${currentPageUrl}`)
+        const currentPageUrl = await browser.getUrl();
+        logger.info(`Arrived at page: ${currentPageUrl}`);
 
         // Step 3: Check visibility of main page elements
         // The test checks if key elements on the login page are visible to the user.
-        const isAccessWalletButtonVisible = await SolflarePage.accessWalletButton.isDisplayed()
-        const isDownloadButtonVisible = await SolflarePage.downloadButton.isDisplayed()
-        const isImageVisible = await SolflarePage.Image.isDisplayed()
+        const isAccessWalletButtonVisible = await SolflarePage.accessWalletButton.isDisplayed();
+        const isDownloadButtonVisible = await SolflarePage.downloadButton.isDisplayed();
+        const isImageVisible = await SolflarePage.Image.isDisplayed();
 
-        // Step 4: Assert visibility of key elements
-        // This step confirms that essential elements are visible on the page, ensuring proper UI functionality.
-        expect(isAccessWalletButtonVisible).toBe(true, '"Access wallet" button should be visible, but it is not.')
-        expect(isDownloadButtonVisible).toBe(true, '"Download for" button should be visible, but it is not.')
-        expect(isImageVisible).toBe(true, '"Image" should be visible, but it is not.')
-
-        // Step 5: Log success messages to confirm elements are visible
+        // Step 4: Log success messages to confirm elements are visible
         // After confirming visibility, these logs help trace the successful completion of checks.
         try {
             expect(isAccessWalletButtonVisible).toBe(true);
-            logger.info('"Access wallet" button is confirmed visible');
+            logger.info('"Access wallet" button is visible');
         } catch (error) {
             logger.error('"Access wallet" button is NOT visible');
             throw error; // rethrow the error after logging
@@ -52,7 +45,7 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
 
         try {
             expect(isDownloadButtonVisible).toBe(true);
-            logger.info('"Download for" button is confirmed visible');
+            logger.info('"Download for" button is visible');
         } catch (error) {
             logger.error('"Download for" button is NOT visible');
             throw error;
@@ -60,7 +53,7 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
 
         try {
             expect(isImageVisible).toBe(true);
-            logger.info('"Image" is confirmed visible');
+            logger.info('"Image" is visible');
         } catch (error) {
             logger.error('"Image" is NOT visible');
             throw error;
@@ -70,12 +63,12 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
     it('should click on "Access Wallet" button', async () => {
         // Step 1: Click on the "Access wallet" button to go to the onboarding section
         // This action is the trigger to navigate from the main page to the onboarding section, where users can access or create wallets.
-        await SolflarePage.accessWalletButton.click()
+        await SolflarePage.accessWalletButton.click();
 
         // Step 2: Wait for onboarding elements to be displayed
         // This step ensures that the page has loaded and specific onboarding elements are visible before further interactions.
-        const isNewWalletButtonVisible = await SolflareOnboardPage.newWalletButton.waitForDisplayed({ timeout: 4000 })
-        const isWalletButtonVisible = await SolflareOnboardPage.walletButton.waitForDisplayed({ timeout: 4000 })
+        const isNewWalletButtonVisible = await SolflareOnboardPage.newWalletButton.waitForDisplayed({ timeout: 4000 });
+        const isWalletButtonVisible = await SolflareOnboardPage.walletButton.waitForDisplayed({ timeout: 4000 });
 
         // Step 3: Assert that the onboarding elements are visible
         // Log before each assertion and handle possible errors
@@ -102,7 +95,7 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
     it('should click on "I need a new wallet" button', async () => {
         // Step 1: Click on the "New Wallet" button to navigate to the new wallet section
         // This step simulates a user action to create a new wallet. It is crucial for testing the functionality of navigating to the new wallet page.
-        await SolflareOnboardPage.newWalletButton.click()
+        await SolflareOnboardPage.newWalletButton.click();
 
         // Step 2: Check visibility of the "Save Phrase" button
         // This step waits for the "Save Phrase" button to be displayed, indicating that the new wallet page has loaded successfully.
@@ -162,7 +155,7 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
 
         // Step 4: Log the combined space-separated texts for verification
         // This log helps trace the combined text and ensures it can be used for subsequent steps.
-        logger.info('Space-separated texts:', spaceSeparatedTexts); // Log the combined text string
+        logger.info('Space-separated texts:', { spaceSeparatedTexts }); // Log the combined text string
 
         // Step 5: Split the combined text into individual words for use in input fields
         const inputValues = spaceSeparatedTexts.split(' '); // Convert the text string into an array of words
@@ -236,7 +229,20 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
         // Step 6: Check if the expected element is visible in the new tab
         // This verifies that the expected content (e.g., a Twitter profile) is displayed in the new tab.
         const isAccountNameVisible = await TwitterSolflare.accountName.waitForDisplayed({ timeout: 4000 });
-        expect(isAccountNameVisible).toBe(true, '"Access wallet" button should be visible, but it is not.');
+        try {
+            // Step 6.1: Assert that the "Save Phrase" button is visible
+            expect(isAccountNameVisible).toBe(true);
+
+            // Step 6.22: Log success if the assertion passes
+            logger.info('"Save Phrase" button is visible'); // Successful assertion
+
+        } catch (error) {
+            // Step 6.3: Log error if the assertion fails
+            logger.error('"Save Phrase" button is NOT visible:', error.message);
+
+            // Step 6.4: Optionally, rethrow the error to ensure the test fails
+            throw error; // This ensures the test fails in case of a failed assertion
+        }
 
         // Step 7: Check if the new tab is the correct Solflare Twitter page
         // This step validates the URL to ensure the correct page was opened.
@@ -264,14 +270,19 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
         const isVideoVisible = await SolflarePortfolioPage.videoElement.waitForDisplayed({ timeout: 4000 }); // Wait for the video element
 
         try {
-            // Step 12: Assert that the onboarding element (video) is visible
-            expect(isVideoVisible).toBe(true, 'The video element should be visible after returning to the original tab'); // Validate visibility
-            logger.info('Verified video element is visible in the original tab.'); // Log if successful
+            // Step 11.1: Assert that the video element is visible
+            expect(isVideoVisible).toBe(true, 'The video element should be visible after returning to the original tab');
+
+            // Step 11.2: Log success if the assertion passes
+            logger.info('Verified video element is visible in the original tab.'); // Success log
+
         } catch (error) {
-            // If the assertion fails, log the error and provide additional context
-            logger.error('Assertion failed: The video element is not visible after returning to the original tab.');
-            logger.error(`Error details: ${error.message}`);
-            throw error; // Re-throw the error to ensure the test fails
+            // Step 11.3: Log error if the assertion fails
+            logger.error('Assertion failed: The video element is not visible after returning to the original tab.'); // Error log
+            logger.error(`Error details: ${error.message}`); // Additional error context
+
+            // Step 11.4: Optionally, rethrow the error to ensure the test fails
+            throw error; // Ensure test fails if the assertion doesn't hold
         }
     });
 })
