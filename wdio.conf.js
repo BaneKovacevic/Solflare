@@ -131,20 +131,16 @@ exports.config = {
     framework: 'mocha',
     // Hook to take screenshots after test failures
     beforeTest: function (test) {
-        console.log("BeforeTest Hook:", test); // Debugging
-        if (test) {
-            console.log("Test Name:", test.fullTitle()); // Check if fullTitle is available
-        } else {
-            console.warn("Undefined test in beforeTest");
-        }
+        const testCaseName = test.fullTitle();
+        logger.info(`Starting test: ${testCaseName}`, { testCase: testCaseName });
     },
 
     afterTest: function (test, context, { error, result, duration, passed, retries }) {
-        console.log("AfterTest Hook:", test); // Debugging
-        if (test) {
-            console.log("Test Name:", test.fullTitle()); // Check if fullTitle is available
+        const testCaseName = test.fullTitle();
+        if (passed) {
+            logger.info(`Test "${testCaseName}" passed in ${duration}ms`, { testCase: testCaseName });
         } else {
-            console.warn("Undefined test in afterTest");
+            logger.error(`Test "${testCaseName}" failed with error: ${error.message}`, { testCase: testCaseName });
         }
     },
     //
