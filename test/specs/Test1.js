@@ -30,17 +30,11 @@ describe('Verify that the correct recovery phrase is copied', () => {
         const isDownloadButtonVisible = await SolflarePage.downloadButton.isDisplayed()
         const isImageVisible = await SolflarePage.Image.isDisplayed()
 
-        // Step 4: Assert visibility of key elements
-        // This step confirms that essential elements are visible on the page, ensuring proper UI functionality.
-        expect(isAccessWalletButtonVisible).toBe(true, '"Access wallet" button should be visible, but it is not.')
-        expect(isDownloadButtonVisible).toBe(true, '"Download for" button should be visible, but it is not.')
-        expect(isImageVisible).toBe(true, '"Image" should be visible, but it is not.')
-
-        // Step 5: Log success messages to confirm elements are visible
+        // Step 4: Log success messages to confirm elements are visible
         // After confirming visibility, these logs help trace the successful completion of checks.
         try {
             expect(isAccessWalletButtonVisible).toBe(true);
-            logger.info('"Access wallet" button is confirmed visible');
+            logger.info('"Access wallet" button is visible');
         } catch (error) {
             logger.error('"Access wallet" button is NOT visible');
             throw error; // rethrow the error after logging
@@ -48,7 +42,7 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         try {
             expect(isDownloadButtonVisible).toBe(true);
-            logger.info('"Download for" button is confirmed visible');
+            logger.info('"Download for" button is visible');
         } catch (error) {
             logger.error('"Download for" button is NOT visible');
             throw error;
@@ -56,7 +50,7 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         try {
             expect(isImageVisible).toBe(true);
-            logger.info('"Image" is confirmed visible');
+            logger.info('"Image" is visible');
         } catch (error) {
             logger.error('"Image" is NOT visible');
             throw error;
