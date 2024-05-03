@@ -264,25 +264,21 @@ describe('Verify that the Solflare’s Twitter profile opens in a new tab and afte
         // Step 10: Switch back to the original tab
         // Returning to the original tab to continue with subsequent test steps.
         await browser.switchToWindow(allHandlesAfter[0]); // Switch back to the original tab
+        logger.info('Switched to original tab.');
 
         // Step 11: Wait for onboarding elements to be displayed
         // This checks if the expected elements are visible after switching back.
-        const isVideoVisible = await SolflarePortfolioPage.videoElement.waitForDisplayed({ timeout: 4000 }); // Wait for the video element
+        const isVideoVisible = await SolflarePortfolioPage.videoElement.isDisplayed(); // Wait for the video element
 
         try {
-            // Step 11.1: Assert that the video element is visible
-            expect(isVideoVisible).toBe(true, 'The video element should be visible after returning to the original tab');
+            // Simulate an assertion that might fail
+            expect(isVideoVisible).toBe(true);
 
-            // Step 11.2: Log success if the assertion passes
-            logger.info('Verified video element is visible in the original tab.'); // Success log
-
+            logger.info('Video element is visible.');
         } catch (error) {
-            // Step 11.3: Log error if the assertion fails
-            logger.error('Assertion failed: The video element is not visible after returning to the original tab.'); // Error log
-            logger.error(`Error details: ${error.message}`); // Additional error context
-
-            // Step 11.4: Optionally, rethrow the error to ensure the test fails
-            throw error; // Ensure test fails if the assertion doesn't hold
+            // Check that the error message is logged
+            logger.error('Assertion failed: Video element is NOT visible.');
+            throw error; // Ensure the test fails
         }
     });
 })

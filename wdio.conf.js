@@ -1,4 +1,5 @@
 const logger = require('C:/Repository/WebdriverIO/Solflare/Logger/logger.js')
+const path = require('path'); // Import the path module from Node.js
 const getArgValue = (argName) => {
     const arg = process.argv.find((a) => a.startsWith(`--${argName}=`));
     return arg ? arg.split('=')[1] : null;
@@ -130,7 +131,17 @@ exports.config = {
     // before running any tests.
     framework: 'mocha',
     // Hook to take screenshots after test failures
-    
+    afterTest: async (test, context, { error, result, duration, passed, retries }) => {
+        if (!passed) { // Only take a screenshot if the test failed
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '_'); // Format the timestamp
+            const testName = test.title.replace(/[^a-zA-Z0-9]/g, '_'); // Clean up the test title
+            const fileName = `FAIL_${testName}_${timestamp}.png`; // Create a unique file name
+            const screenshotPath = `./test-results/screenshots/${fileName}`; // Path for the screenshot
+
+            await browser.saveScreenshot(screenshotPath); // Save the screenshot
+            console.log(`Screenshot saved at ${screenshotPath}`); // Log the screenshot location
+        }
+    },
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
