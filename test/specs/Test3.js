@@ -35,17 +35,11 @@ describe('Verify that the correct recovery phrase is copied', () => {
         const isDownloadButtonVisible = await SolflarePage.downloadButton.isDisplayed()
         const isImageVisible = await SolflarePage.Image.isDisplayed()
 
-        // Step 4: Assert visibility of key elements
-        // This step confirms that essential elements are visible on the page, ensuring proper UI functionality.
-        expect(isAccessWalletButtonVisible).toBe(true, '"Access wallet" button should be visible, but it is not.')
-        expect(isDownloadButtonVisible).toBe(true, '"Download for" button should be visible, but it is not.')
-        expect(isImageVisible).toBe(true, '"Image" should be visible, but it is not.')
-
-        // Step 5: Log success messages to confirm elements are visible
+        // Step 4: Log success messages to confirm elements are visible
         // After confirming visibility, these logs help trace the successful completion of checks.
         try {
             expect(isAccessWalletButtonVisible).toBe(true);
-            logger.info('"Access wallet" button is confirmed visible');
+            logger.info('"Access wallet" button is visible');
         } catch (error) {
             logger.error('"Access wallet" button is NOT visible');
             throw error; // rethrow the error after logging
@@ -53,7 +47,7 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         try {
             expect(isDownloadButtonVisible).toBe(true);
-            logger.info('"Download for" button is confirmed visible');
+            logger.info('"Download for" button is visible');
         } catch (error) {
             logger.error('"Download for" button is NOT visible');
             throw error;
@@ -61,7 +55,7 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         try {
             expect(isImageVisible).toBe(true);
-            logger.info('"Image" is confirmed visible');
+            logger.info('"Image" is visible');
         } catch (error) {
             logger.error('"Image" is NOT visible');
             throw error;
@@ -163,7 +157,7 @@ describe('Verify that the correct recovery phrase is copied', () => {
 
         // Step 4: Log the combined space-separated texts for verification
         // This log helps trace the combined text and ensures it can be used for subsequent steps.
-        logger.info('Space-separated texts:', spaceSeparatedTexts); // Log the combined text string
+        logger.info('Space-separated texts:', { spaceSeparatedTexts }); // Log the combined text string
 
         // Step 5: Split the combined text into individual words for use in input fields
         const inputValues = spaceSeparatedTexts.split(' '); // Convert the text string into an array of words
@@ -230,73 +224,117 @@ describe('Verify that the correct recovery phrase is copied', () => {
         const mainWallet = await SolflareWalletManagementPage.mainWalletText.getText(); // Get the text of the "Main Wallet"
 
         // Step 4: Assert that the text of the "Main Wallet" element matches the expected value
-        // This assertion confirms that the main wallet is labeled correctly, indicating the portfolio is set up as expected.
-        assert.strictEqual(mainWallet, 'Main Wallet', 'The text should be "Main Wallet"'); // Validate that the text matches the expected label
+        logger.info('Asserting that the "Main Wallet" text matches the expected value');
+
+        try {
+            assert.strictEqual(mainWallet, 'Main Wallet', 'The text should be "Main Wallet"'); // Assertion
+            logger.info('Assertion passed: The text is "Main Wallet"'); // Log success
+        } catch (error) {
+            logger.error('Assertion failed: The text is not "Main Wallet"'); // Log failure
+            logger.error(`Error details: ${error.message}`); // Log error details
+            throw error; // Ensure the test fails on error
+        }
+
+        // Log end of test
+        logger.info('Test to open Solana section completed');
+
     });
 
     it('Verify adding new wallets', async () => {
+        // Log the start of the test
+        logger.info('Starting test: Verify adding new wallets');
+
         // Step 1: Click the "Plus" button to expand wallet management options
-        // This step initiates interaction with the wallet management section to access more features.
-        await SolflareWalletManagementPage.plusButton.click(); // Click to expand wallet management options
+        logger.info('Clicking the "Plus" button to expand wallet management options');
+        await SolflareWalletManagementPage.plusButton.click(); // Click the "Plus" button
 
         // Step 2: Click the "Recovery Phrase" button to enter the recovery phrase management section
-        // This step leads to a section where switches can be toggled for various actions.
-        await SolflareWalletManagementOptionsPage.recoveryPhraseButton.click(); // Click to access recovery phrase options
+        logger.info('Clicking the "Recovery Phrase" button to enter recovery phrase management');
+        await SolflareWalletManagementOptionsPage.recoveryPhraseButton.click(); // Click the button to manage recovery phrases
 
         // Step 3: Create a list of all switch elements on the page
-        // This step gathers all switches in the current context for further interaction and verification.
-        const switches = SolflareWalletManagementOptionsManageAccountsPage.switches; // List of all switches
+        logger.info('Creating a list of all switch elements on the page');
+        const switches = await SolflareWalletManagementOptionsManageAccountsPage.switches; // Get all switches
 
-        // Step 4: Ensure there are elements in the list to avoid empty interactions
-        // This validation prevents errors due to missing or undefined switches.
-        if (switches.length === 0) { // Check if there are any switches in the list
-            throw new Error("No switches found"); // Throw an error if no switches are found
+        // Step 4: Check if there are any switches
+        if (!switches || switches.length === 0) { // If no switches, throw an error
+            logger.error("No switches found on the page");
+            throw new Error("No switches found");
         }
 
+        // Log the number of switches
+        logger.info(`Total switches found: ${switches.length}`);
+
         // Step 5: Get the first switch and verify its state
-        // This step checks if the first switch is toggled (checked) and whether it is enabled or disabled.
-        const firstSwitch = switches[0]; // Select the first switch in the list
-        const firstSwitchState = await firstSwitch.getAttribute('aria-checked'); // Check if the switch is checked
-        assert.strictEqual(firstSwitchState, 'true', 'The first switch should be checked'); // Assert the expected state
+        logger.info('Checking the first switch state');
+        const firstSwitch = switches[0]; // Select the first switch
+        const firstSwitchState = await firstSwitch.getAttribute('aria-checked'); // Get the state of the first switch
+
+        try {
+            assert.strictEqual(firstSwitchState, 'true', 'The first switch should be checked'); // Validate the state
+            logger.info('The first switch is checked'); // Log success
+        } catch (error) {
+            logger.error('The first switch is NOT checked'); // Log failure
+            throw error; // Ensure test fails
+        }
 
         // Step 6: Assert that the first switch is disabled
-        // This assertion confirms that the switch is correctly disabled to prevent unintended toggling.
+        logger.info('Checking if the first switch is disabled');
         const isDisabled = await firstSwitch.isEnabled(); // Check if the first switch is enabled
-        assert.strictEqual(isDisabled, false, 'The first switch should be disabled'); // Assert that it is disabled
+
+        try {
+            assert.strictEqual(isDisabled, false, 'The first switch should be disabled'); // Validate it is disabled
+            logger.info('The first switch is disabled'); // Log success
+        } catch (error) {
+            logger.error('The first switch is NOT disabled'); // Log failure
+            throw error; // Ensure test fails
+        }
 
         // Step 7: Interact with the third switch to toggle its state
-        // This step simulates a user toggling another switch for further validation.
-        const thirdSwitch = switches[2]; // Select the third switch in the list
+        logger.info('Toggling the third switch');
+        const thirdSwitch = switches[2]; // Get the third switch
         await thirdSwitch.click(); // Click to toggle the third switch
 
-        // Step 7.1: Assert that the third switch is checked after interaction
-        // This assertion verifies that the click operation toggles the switch as expected.
-        const thirdSwitchState = await thirdSwitch.getAttribute('aria-checked'); // Check if the switch is checked
-        assert.strictEqual(thirdSwitchState, 'true', 'The third switch should be checked'); // Validate the expected state
+        try {
+            const thirdSwitchState = await thirdSwitch.getAttribute('aria-checked'); // Check if it's checked
+            assert.strictEqual(thirdSwitchState, 'true', 'The third switch should be checked'); // Validate the state
+            logger.info('The third switch is checked'); // Log success
+        } catch (error) {
+            logger.error('The third switch is NOT checked'); // Log failure
+            throw error; // Ensure test fails
+        }
 
         // Step 8: Interact with the fourth switch to toggle its state
-        // This step simulates another user interaction for additional testing.
-        const fourthSwitch = switches[3]; // Select the fourth switch
+        logger.info('Toggling the fourth switch');
+        const fourthSwitch = switches[3]; // Get the fourth switch
         await fourthSwitch.click(); // Click to toggle the fourth switch
 
-        // Step 8.1: Assert that the fourth switch is checked after interaction
-        // This assertion confirms that the switch was correctly toggled.
-        const fourthSwitchState = await fourthSwitch.getAttribute('aria-checked'); // Check if the switch is checked
-        assert.strictEqual(fourthSwitchState, 'true', 'The fourth switch should be checked'); // Validate the expected state
+        try {
+            const fourthSwitchState = await fourthSwitch.getAttribute('aria-checked'); // Check if it's checked
+            assert.strictEqual(fourthSwitchState, 'true', 'The fourth switch should be checked'); // Validate the state
+            logger.info('The fourth switch is checked'); // Log success
+        } catch (error) {
+            logger.error('The fourth switch is NOT checked'); // Log failure
+            throw error; // Ensure test fails
+        }
 
-        // Step 9: Click the "Save" button to save the changes made to the switches
-        // This step simulates a user saving the changes made to the wallet management settings.
-        await SolflareWalletManagementOptionsManageAccountsPage.saveButton.click(); // Click to save the changes
+        // Step 9: Click the "Save" button to save changes
+        logger.info('Clicking "Save" to apply changes');
+        await SolflareWalletManagementOptionsManageAccountsPage.saveButton.click(); // Click the save button
+
         await browser.pause(1000); // Pause briefly to allow processing of the changes
-
         // Step 10: Get the count of wallet items to verify the number of managed wallets
-        // This step checks the updated count of wallet items after saving changes.
-        const walletItems = await SolflareWalletManagementOptionsManageAccountsPage.myWallets.length; // Get the total count of wallets
-        console.log(`Number of items in the list: ${walletItems}`); // Log the total count of wallet items
+        logger.info('Retrieving the number of wallet items');
+        const walletItems = await SolflareWalletManagementOptionsManageAccountsPage.myWallets; // Get the wallet items
 
-        // Step 11: Assert that the number of wallet items matches the expected count
-        // This assertion confirms that the correct number of wallets is displayed, indicating successful management.
-        const expectedItemCount = 3; // Define the expected number of wallet items
-        assert.strictEqual(walletItems, expectedItemCount, `Expected ${expectedItemCount} items in the list`); // Validate the expected count of wallets
-    });
+        try {
+            assert.strictEqual(walletItems.length, 3, 'Expected 3 wallet items'); // Validate the expected count
+            logger.info('Verified correct number of wallet items'); // Log success
+        } catch (error) {
+            logger.error('Wallet items count mismatch'); // Log failure
+            throw error; // Ensure test fails
+        }
+        // Log the end of the test
+        logger.info('Test for verifying adding new wallets completed');
+    })
 })
